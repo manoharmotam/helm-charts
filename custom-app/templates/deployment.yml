@@ -44,7 +44,7 @@ spec:
         args: 
         - |
           while true; do
-            curl "http://pyecho-svc"
+            curl -fsSL "http://pyecho-svc"
             sleep 2
           done
         imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
