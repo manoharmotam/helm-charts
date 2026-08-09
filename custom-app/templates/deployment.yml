@@ -10,12 +10,12 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.labels.app }}
-      stack: {{ .Values.labels.app }}
+      stack: {{ .Values.labels.stack }}
   template:
     metadata:
       labels:
         app: {{ .Values.labels.app }}
-        stack: {{ .Values.labels.app }}
+        stack: {{ .Values.labels.stack }}
     spec:
       containers:
       - name: python-pod
