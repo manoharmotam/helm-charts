@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-depl
+  labels:
+    app: {{ .Values.labels.app }}
+    stack: {{ .Values.labels.stack }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.app }}
+      stack: {{ .Values.labels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.labels.app }}
+        stack: {{ .Values.labels.app }}
+    spec:
+      containers:
+      - name: python-pod
+        image: "python:{{ .Values.repository }}"
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          mkdir webapp && cd webapp
+          cat > index.html << EOF
+          <head>
+          <title>Sample app</title>
+          <body>
+            <h1> This is a Sample python app to test K8S </h1>
+            <p> Just a note that this page is accessible </p>
+          </body>
+          </head>
+          EOF
+          python3 -m http.server 5678
+        ports:
+        - name: python-port
+          containerPort: {{ .Values.containerPort }}
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+      - name: curl-image
+        image: "{{ .Values.repository }}/curl"
+        command: ["/bin/sh", "-c"]
+        args: 
+        - |
+          while true; do
+            curl "http://pyecho-svc"
+            sleep 2
+          done
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}

@@ -1,0 +1,10 @@
+labels:
+  app: "web-app"
+  stack: "python"
+repository: "alpine"
+deployment:
+  imagePullPolicy: "Always"
+service:
+  http: 80
+  nodePort: 31000
+containerPort: 5678
